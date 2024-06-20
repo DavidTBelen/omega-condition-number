@@ -1,1 +1,1 @@
-# --condition-number
+$\omega$-condition-number
