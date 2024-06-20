@@ -1,4 +1,4 @@
-# $\omega$-condition-number
+# $\omega$-condition number
 Authors: **Woosuk Leo Jung, David Torregrosa-Belén, Henry Wolkowicz**
 
 Code associated with the [paper](https://arxiv.org/abs/2306.17144):
