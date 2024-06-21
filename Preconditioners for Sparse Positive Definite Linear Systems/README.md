@@ -20,7 +20,7 @@
 	
 	- Takes a subset of test matrices from the USF repository
 	  and removes the ones that lead to "trivial problems"
-	- Output is a file "small_matrices_list.mat" that can be used as data for the "run_file"
+	- Output is a file "selected_matrices_list.mat" that can be used as data for the "run_file"
 
 5. folder "data" contains the stored data from the experiments
 	 
