@@ -8,13 +8,12 @@
 
 2. performance_profile_file.m
 
-	- Plots the performance profile by loading the results file.
+	- Plots the performance profile in Section 4.1 in the paper by loading the results file.
 	- It calls for "tps_performance.m" and "perf.m"
-	- Saves the plots in the latex folder
 
 3. table_file.m
 	
-	- Generates the tables by loading the results file.
+	- Generates the tables from Section 4.1 in the paper by loading the results file.
 	- Choose type for obtaining the desired table (time, iterations, residuals,...)
 	- Saves the tables in the latex folder
 
