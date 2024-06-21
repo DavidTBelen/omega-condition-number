@@ -11,7 +11,7 @@ folder = fileparts(which(mfilename));
 addpath(genpath(folder));
 
 % Choose the data set: 
-which_experiment = 'small_matrices';
+which_experiment = 'selected_matrices';
 data = load([which_experiment,'_list']); %array with name of matrices
 problems = data.small_matrices_list;
 

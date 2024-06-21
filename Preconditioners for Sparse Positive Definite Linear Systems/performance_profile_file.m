@@ -7,7 +7,7 @@ addpath(genpath(folder));
 
 
 % Chose the data set:
-which_experiment = 'small_matrices';
+which_experiment = 'selected_matrices';
 
 % Save the plot:
 save_plot = true;
@@ -55,7 +55,8 @@ measure_it(4) = {output.ichol_prec.it};
 
 fig1 = figure(1);
 clf
-figname  = ['..\..\Latexrevisingasofnov9COAPSubmission/perf_time_', which_experiment, '.png'];
+% figname  = ['..\..\Latexrevisingasofnov9COAPSubmission/perf_time_', which_experiment, '.png'];
+figname  = ['perf_time_', which_experiment, '.png'];
 [T, n_fails] = tps_performance(measure_time,fails);
 perf(T,1,'Time',n_fails)
 
@@ -68,7 +69,8 @@ end
 
 fig2 = figure(2);
 clf
-figname  = ['..\..\Latexrevisingasofnov9COAPSubmission/perf_it_', which_experiment, '.png'];
+% figname  = ['..\..\Latexrevisingasofnov9COAPSubmission/perf_it_', which_experiment, '.png'];
+figname  = ['perf_it_', which_experiment, '.png'];
 [T, n_fails] = tps_performance(measure_it,fails);
 perf(T,1,'Iterations',n_fails)
 

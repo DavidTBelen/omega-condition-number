@@ -1,7 +1,7 @@
 %%% This file generates a profile plot for the output of a chosen
 %%% experiment
 
-clear all
+clear 
 folder = fileparts(which(mfilename)); 
 addpath(genpath(folder));
 
@@ -12,7 +12,7 @@ type = 'time_prec';
 
 
 % Chose the data set:
-which_experiment = 'small_matrices';
+which_experiment = 'selected_matrices';
 
 % Save the plot:
 save_table = true;
@@ -23,8 +23,8 @@ if load_data == true
     dataname = ['output_exp_', which_experiment];
     load(dataname)
     
-    data = load([which_experiment,'_list']); %array with name of matrices
-    matrices_names = data.small_matrices_list;
+    data = load([which_experiment,]); %array with name of matrices
+    matrices_names = data.selected_matrices_list;
 
 
     
@@ -52,7 +52,9 @@ if strcmp(type, 'time')
     measure(:,3) = output.dbt_prec.time;
     measure(:,4) = output.ichol_prec.time;
 
-    namefile = '..\..\Latexrevisingasofnov9COAPSubmission/table_time.tex';
+    % namefile = '..\..\Latexrevisingasofnov9COAPSubmission/table_time.tex';
+    namefile = 'table_time.tex';
+
     
     fmt0 = '%i & %i ';  %1.4e & %4.2f &  %2.4f & %2.4f & %2.4f';
     fmt1 = ' & %.2f ';
@@ -65,7 +67,9 @@ elseif strcmp(type, 'iterations')
     measure(:,3) = output.dbt_prec.it;
     measure(:,4) = output.ichol_prec.it;
 
-    namefile = '..\..\Latexrevisingasofnov9COAPSubmission/table_iterations.tex';
+    % namefile = '..\..\Latexrevisingasofnov9COAPSubmission/table_iterations.tex';
+    namefile = 'table_iterations.tex';
+
     
     fmt0 = '%i & %i ';  %1.4e & %4.2f &  %2.4f & %2.4f & %2.4f';
     fmt1 = ' & %.1i ';
@@ -79,7 +83,8 @@ elseif strcmp(type, 'residuals')
     measure(:,3) = output.dbt_prec.res;
     measure(:,4) = output.ichol_prec.res;
 
-    namefile = '..\..\Latexrevisingasofnov9COAPSubmission/table_residuals.tex';
+    % namefile = '..\..\Latexrevisingasofnov9COAPSubmission/table_residuals.tex';
+    namefile = 'table_residuals.tex';
     
     fmt0 = '%i & %i ';  %1.4e & %4.2f &  %2.4f & %2.4f & %2.4f';
     fmt1 = ' & %1.3e ';
@@ -92,7 +97,9 @@ elseif strcmp(type, 'time_prec')
     measure(:,3) = output.dbt_prec.time_prec;
     measure(:,4) = output.ichol_prec.time_prec;
 
-    namefile = '..\..\Latexrevisingasofnov9COAPSubmission/table_time_prec.tex';
+    % namefile = '..\..\Latexrevisingasofnov9COAPSubmission/table_time_prec.tex';
+    namefile = 'table_time_prec.tex';
+
     
     fmt0 = '%i & %i ';  %1.4e & %4.2f &  %2.4f & %2.4f & %2.4f';
     fmt1 = ' & %1.3e ';
