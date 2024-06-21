@@ -25,8 +25,8 @@
 
 5. folder "data" contains the stored data from the experiments
 	 
-	- folder "small_matrices" contains .mat files of matrices.
+	- Folder "small_matrices" contains .mat files of matrices.
 
 6. folder "Auxiliary_files" contains different functions:
 
-	- folder "Preconditioners" contain the codes for computing the diagonal and diagonal + block triangular preconditioner
+	- Folder "Preconditioners" contain the codes for computing the diagonal and diagonal + block triangular preconditioner
