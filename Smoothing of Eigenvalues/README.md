@@ -1,2 +1,2 @@
-# Organization of the folder:
+"optprecondomegakappa.m" generates Figure 2.1.
 
