@@ -11,12 +11,12 @@ function perf(T,logplot,title4str,n_fails)
 % log (base 2) performance plot.
 if (nargin < 2) logplot = 0; end
 
-colors  = [ [1 0 0];[0 0 1];[0 1 0];[0 1 1];[1 0 0];[1 0 1];
+colors  = [ [1 0 0];[0 0 1];[0 1 0];[0 1 1];[1 0 1];
             [0 0 0.5];[0 0.5 0];[0 0.5 0.5];[0.5 0 0];[0.5 0 0.5];[0.5 0.5 0];
             [0.3 0.9 0.5];[0.7 0.3 0.5];[0.5 0.3 0.5];[0.3 0.3 0.7];[0.2 0.5 0.9];[0.1 0.4 0.3]
           ];
 %lines   = cellstr(char( '-.', '--', ':', '-'));
-LineStyles   = ["-.","--","-",":"];  %[ '-.' '--' ':' '-'];
+LineStyles   = ["-.","--","-",":","-."];  %[ '-.' '--' ':' '-'];
 %markers = ['o' 's'  'x' 'd' '>' 'v' '*'];
 
 [np,ns] = size(T);
@@ -62,9 +62,12 @@ end
 legend_labels_1 = "NONE (" +string(n_fails(1))+ " failures)";
 legend_labels_2 = "DIAG (" +string(n_fails(2))+ " failures)";
 legend_labels_3 = "ITRIU (" +string(n_fails(3))+ " failures)";
-legend_labels_4 = "ICHOL (" +string(n_fails(3))+ " failures)";
+legend_labels_4 = "ICHOL(1) (" +string(n_fails(4))+ " failures)";
+legend_labels_5 = "ICHOL(2) (" +string(n_fails(5))+ " failures)";
 
-legend(legend_labels_1,	legend_labels_2, legend_labels_3, legend_labels_4);
+
+legend(legend_labels_1,	legend_labels_2, legend_labels_3, legend_labels_4,...
+    legend_labels_5);
 legend('location','southeast')
 if (logplot) 
     xlabel(strcat('log_2(\tau)')); 
