@@ -3,7 +3,7 @@ Authors: **Woosuk Leo Jung, David Torregrosa-Belén, Henry Wolkowicz**
 
 Code associated with the paper:
 
-> W. L. Jung, D. Torregrosa-Belén, H. Wolkowicz: The ω-Condition Number for Optimal Preconditioning and Low Rank Generalized Jacobian Updating.
+> W. L. Jung, D. Torregrosa-Belén, H. Wolkowicz: The ω-Condition Number: Applications to Optimal Preconditioning and Low Rank Generalized Jacobian Updating.
 > 
 
 # Organization of the folder:
