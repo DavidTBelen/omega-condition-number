@@ -14,22 +14,17 @@ tol = optionsperf.tol;
 
 
 
-tps = zeros(ndim*nprob,4);
+tps = zeros(ndim*nprob,5);
 
 
 for ii=1:ndim
     for jj=1:nprob
-        for kk=1:3
+        for kk=1:5
             if results(ii,jj,kk,3) < tol
                 tps((ii-1)*nprob +jj,kk) =  results(ii,jj,kk,2);
             else
                 tps((ii-1)*nprob+jj,kk) = NaN;
             end
-        end
-        if results(ii,jj,4,3) < tol
-            tps((ii-1)*nprob+jj,4) = results(ii,jj,4,2);
-        else
-            tps((ii-1)*nprob+jj,4) = NaN;
         end
     end
 end

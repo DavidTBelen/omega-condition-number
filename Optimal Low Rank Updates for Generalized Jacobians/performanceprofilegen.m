@@ -14,7 +14,7 @@ tol = optionsperf.tol;
 
 
 
-tps = zeros(ndim*nprob,4);
+tps = zeros(ndim*nprob,5);
 
 
 for ii=1:ndim
@@ -27,9 +27,14 @@ for ii=1:ndim
             end
         end
         if results(ii,jj,4,3) < tol
-            tps((ii-1)*nprob+jj,4) = results(ii,jj,4,4) + timegammastar(ii,jj,1);
+            tps((ii-1)*nprob+jj,4) = results(ii,jj,4,4) + min(timegammastar(ii,jj,1), timegammastar(ii,jj,2));
         else
             tps((ii-1)*nprob+jj,4) = NaN;
+        end
+        if results(ii,jj,5,3) < tol
+            tps((ii-1)*nprob+jj,5) = results(ii,jj,5,4) + timegammastar(ii,jj,3);
+        else
+            tps((ii-1)*nprob+jj,5) = NaN;
         end
     end
 end

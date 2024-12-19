@@ -12,12 +12,12 @@ function perf(T,logplot,title4str)
 
 if (nargin < 2) logplot = 0; end
 
-colors  = [ [1 0 0];[0 0 1];[0 1 0];[0 1 1];[1 0 0];[1 0 1];
+colors  = [ [1 0 0];[0 0 1];[0 1 0];[0 1 1];[1 0 1];
             [0 0 0.5];[0 0.5 0];[0 0.5 0.5];[0.5 0 0];[0.5 0 0.5];[0.5 0.5 0];
             [0.3 0.9 0.5];[0.7 0.3 0.5];[0.5 0.3 0.5];[0.3 0.3 0.7];[0.2 0.5 0.9];[0.1 0.4 0.3]
           ];
 %lines   = cellstr(char( '-.', '--', ':', '-'));
-LineStyles   = ["-.",":","--","-"];  %[ '-.' '--' ':' '-'];
+LineStyles   = ["-.",":","--","-","-."];  %[ '-.' '--' ':' '-'];
 % markers = ['o' 's'  'x' 'd' '>' 'v' '*'];
 
 [np,ns] = size(T);
@@ -60,7 +60,7 @@ for s = 1: ns
  hold on;
 end
 
-legend('\gamma = 0',	'\gamma = e', '\gamma = u^{-2}',	'\gamma = \gamma^{\ast}_p');
+legend('\gamma = 0',	'\gamma = e', '\gamma = u^{-2}','\gamma = \gamma^{\ast}_{p}','\gamma = \gamma^{\ast}_{apr}');
 legend('location','southeast')
 if (logplot) 
     xlabel(strcat('log_2(\tau)')); 
