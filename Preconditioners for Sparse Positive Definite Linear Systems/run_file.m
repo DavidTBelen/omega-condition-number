@@ -11,17 +11,11 @@ folder = fileparts(which(mfilename));
 addpath(genpath(folder));
 
 % Choose the data set: 
-which_experiment = 'selected_matrices';
+which_experiment = 'small_matrices';
 data = load([which_experiment,'_list']); %array with name of matrices
 problems = data.small_matrices_list;
 
 
-%%%%%%%%%%%%%%%
-% %% This is TEMP
-% problems =[ "mhd4800b",    "s3rmt3m3",    "ex15",   "bcsstk38",...
-%     "aft01",    "nd3k",    "bloweybq",    "msc10848",    "bcsstk17"]; 
-
-%%%%%%%%%%%%%%%
 
 nproblems = length(problems);
 
@@ -67,6 +61,14 @@ output.ichol_prec.relres = zeros(nproblems,1);
 output.ichol_prec.res = zeros(nproblems,1);
 output.ichol_prec.fails = zeros(nproblems,1);
 
+% Incomplete Cholesky preconditioner 2:
+output.ichol_2_prec.it = zeros(nproblems,1);
+output.ichol_2_prec.time = zeros(nproblems,1);
+output.ichol_2_prec.time_prec = zeros(nproblems,1);
+output.ichol_2_prec.relres = zeros(nproblems,1);
+output.ichol_2_prec.res = zeros(nproblems,1);
+output.ichol_2_prec.fails = zeros(nproblems,1);
+
 
 for pp = 1:nproblems
     
@@ -86,7 +88,7 @@ for pp = 1:nproblems
     output.problem_density(pp) = nnzW/n^2;
 
 
-    k =  ceil((.5+sqrt(1+4*nnzW)*.5)*.01)+1; %dimension for the triangular block of the preconditioner
+    k =  ceil((.5+sqrt(1+4*2*nnzW*0.1)*.5))+1; %dimension for the triangular block of the preconditioner
     
     % Compute optimal preconditioners:
 
@@ -111,15 +113,25 @@ for pp = 1:nproblems
     WU = (WU+WU')/2;
     output.dbt_prec.time_prec(pp) = stop_btp;
 
+
+
     % Incomplete Cholesky preconditioner
     start_ichol_prec = tic;
     alpha = max(sum(abs(W),2)./diag(W))-2;
     L = ichol(W, struct('type','ict','droptol',1e-3,'diagcomp',alpha));
-    H = inv(L');    
+    %H = inv(L');    
     stop_ichol_prec = toc(start_ichol_prec);
-    WC = H'*W*H;
-    WC = (WC+WC')/2;
     output.ichol_prec.time_prec(pp) = stop_ichol_prec;
+
+    % Incomplete Cholesky preconditioner (2)
+    start_ichol_2_prec = tic;
+    alpha = max(sum(abs(W),2)./diag(W))-2;
+    alpha = alpha*0.01;
+    L2 = ichol(W, struct('type','ict','droptol',1e-3,'diagcomp',alpha));
+    %H = inv(L');    
+    stop_ichol_2_prec = toc(start_ichol_2_prec);
+    output.ichol_2_prec.time_prec(pp) = stop_ichol_2_prec;
+
 
 
     % Run solvers:
@@ -142,12 +154,10 @@ for pp = 1:nproblems
     output.no_prec.time(pp) = stopW;
     output.no_prec.relres(pp) = relresW;
     output.no_prec.res(pp) = norm(W*xW-b);
-    if flagW > 0
+    if flagW > 0 || relresW > tol
         output.no_prec.fails(pp) = 1;
     end
 
-    
-    
     
     % Diagonal preconditioner:
 
@@ -161,32 +171,30 @@ for pp = 1:nproblems
     output.diag_prec.time(pp) = stopD + stop_dp;
     output.diag_prec.relres(pp) = relresD;
     output.diag_prec.res(pp) = norm(W*xD-b);
-    if flagD > 0
+    if flagD > 0 || relresD > tol
         output.diag_prec.fails(pp) = 1;
     end
 
     % Diagonal + block triangular preconditioner
-    
+
     startU = tic;
     [yU,flagU,relresU,iterU,resvecU] = pcg(WU,U'*b,tol,maxit,[],[],xinit);
     xU = U*yU;
     stopU = toc(startU);
     disp('3. Diagonal + block triangular solver done!')
 
+
     output.dbt_prec.it(pp) = iterU;
     output.dbt_prec.time(pp) = stopU + stop_btp;
     output.dbt_prec.relres(pp) = relresU;
     output.dbt_prec.res(pp) = norm(W*xU-b);
-    if flagU > 0
+    if flagU > 0 || relresU > tol
         output.dbt_prec.fails(pp) = 1;
     end
 
     % Incomplete Cholesky
-
     startC = tic;
-    [yC,flagC,relresC,iterC,resvecC] = pcg(WC,H'*b,tol,maxit,[],[],xinit);
-    % [yC,flagC,relresC,iterC,resvecC] = pcg(W,b,tol,maxit,L,L',xinit);
-    xC = L'\yC;
+    [xC,flagC,relresC,iterC,resvecC] = pcg(W,b,tol,maxit,L,L',xinit);
     stopC = toc(startC);
     disp('4. Incomplete cholesky solver done!')
     
@@ -194,15 +202,32 @@ for pp = 1:nproblems
     output.ichol_prec.time(pp) = stopC + stop_ichol_prec;
     output.ichol_prec.relres(pp) = relresC;
     output.ichol_prec.res(pp) = norm(W*xC-b);
-    if flagU > 0
+    if flagC > 0 || relresC > tol
         output.ichol_prec.fails(pp) = 1;
+    end
+
+    
+    % Incomplete Cholesky 2
+    startC_2 = tic;
+    [xC_2,flagC_2,relresC_2,iterC_2,resvecC_2] = pcg(W,b,tol,maxit,L2,L2',xinit);
+    stopC_2 = toc(startC_2);
+    disp('5. Incomplete cholesky solver done!')
+    
+    output.ichol_2_prec.it(pp) = iterC_2;
+    output.ichol_2_prec.time(pp) = stopC_2 + stop_ichol_2_prec;
+    output.ichol_2_prec.relres(pp) = relresC_2;
+    output.ichol_2_prec.res(pp) = norm(W*xC_2-b);
+    if flagC_2 > 0 || relresC_2 > tol
+        output.ichol_2_prec.fails(pp) = 1;
     end
 
     fprintf('\n')
 
+    
+
 end % end for pp
 
- filename =  "data/output_exp_" + string(which_experiment) +".mat";
+ filename =  "data/output_exp_" + string(which_experiment);
  save(filename,"output")
      
 

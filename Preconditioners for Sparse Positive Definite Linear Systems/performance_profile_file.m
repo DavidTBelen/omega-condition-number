@@ -7,7 +7,7 @@ addpath(genpath(folder));
 
 
 % Chose the data set:
-which_experiment = 'selected_matrices';
+which_experiment = 'small_matrices';
 
 % Save the plot:
 save_plot = true;
@@ -15,7 +15,7 @@ save_plot = true;
 load_data = true;
 
 if load_data == true
-    dataname = ['output_exp_', which_experiment];
+    dataname = ['output_exp_', which_experiment, '_Rev2'];
     load(dataname)
     
     data = output;
@@ -29,25 +29,30 @@ end
 
 % Define the data for the performance profile:
 
-fails = cell(4,1);
+fails = cell(5,1);
 fails(1) = {output.no_prec.fails};
 fails(2) = {output.diag_prec.fails};
 fails(3) = {output.dbt_prec.fails};
 fails(4) = {output.ichol_prec.fails};
+fails(5) = {output.ichol_2_prec.fails};
 
 
-measure_time = cell(4,1);
+
+measure_time = cell(5,1);
 measure_time(1) = {output.no_prec.time};
 measure_time(2) = {output.diag_prec.time};
 measure_time(3) = {output.dbt_prec.time};
 measure_time(4) = {output.ichol_prec.time};
+measure_time(5) = {output.ichol_2_prec.time};
 
 
-measure_it = cell(4,1);
+measure_it = cell(5,1);
 measure_it(1) = {output.no_prec.it};
 measure_it(2) = {output.diag_prec.it};
 measure_it(3) = {output.dbt_prec.it};
 measure_it(4) = {output.ichol_prec.it};
+measure_it(5) = {output.ichol_2_prec.it};
+
 
 
 
@@ -55,7 +60,7 @@ measure_it(4) = {output.ichol_prec.it};
 
 fig1 = figure(1);
 clf
-% figname  = ['..\..\Latexrevisingasofnov9COAPSubmission/perf_time_', which_experiment, '.png'];
+%figname  = ['..\..\Latexrevisingasofnov9COAPSubmission/perf_time_', which_experiment, '.png'];
 figname  = ['perf_time_', which_experiment, '.png'];
 [T, n_fails] = tps_performance(measure_time,fails);
 perf(T,1,'Time',n_fails)
@@ -69,7 +74,7 @@ end
 
 fig2 = figure(2);
 clf
-% figname  = ['..\..\Latexrevisingasofnov9COAPSubmission/perf_it_', which_experiment, '.png'];
+%figname  = ['..\..\Latexrevisingasofnov9COAPSubmission/perf_it_', which_experiment, '.png'];
 figname  = ['perf_it_', which_experiment, '.png'];
 [T, n_fails] = tps_performance(measure_it,fails);
 perf(T,1,'Iterations',n_fails)
