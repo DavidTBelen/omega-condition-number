@@ -10,11 +10,11 @@ Code associated with the paper:
 
 The folders are organized according to the numerics in the different sections of the paper:
 
-> "Smoothing of Eigenvalues" is for Section 2.2.1.
+>  "Numerical evaluation of omega" is for Section 2.1.1.
 >
-> "Error Analysis Test" is for Section 2.2.2.
->
-> "Numerical evaluation of omega" is for Section 2.3.
+>  "Error Analysis Test" is for Section 2.2.
+> 
+>  "Smoothing of Eigenvalues" is for Section 2.3.
 >
 > "Preconditioners for Sparse Positive Definite Linear System" is for Section 4.1.
 > 
