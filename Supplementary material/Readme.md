@@ -6,12 +6,6 @@ Authors: **Woosuk Leo Jung, David Torregrosa-Belén, Henry Wolkowicz**
 
 The folders is organized as follows:
 
->  "Numerical evaluation of omega" is for Section 2.1.1.
->
->  "Error Analysis Test" is for Section 2.2.
-> 
->  "Smoothing of Eigenvalues" is for Section 2.3.
->
-> "Preconditioners for Sparse Positive Definite Linear System" is for Section 4.1.
-> 
-> "Optimal Low Rank Updates for Generalized Jacobian" is for Section 4.2.
+>  1. SuppMaterial.pdf:
+>      - Contains further formulae for ω-optimal preconditioners of different structures for linear systems.
+>      - The empirics about clustering of eigenvalues provided by the optimal ω- and κ-optimal diagonal preconditioners in Section 2.3 of the main paper are extended to a subset of test matrices from the SuiteSparse Matrix Collection.
