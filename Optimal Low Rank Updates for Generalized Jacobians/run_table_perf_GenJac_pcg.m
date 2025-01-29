@@ -1,16 +1,23 @@
+%%% Omega-optimal Low Rank Updates for Generalized Jacobian
+%%% Minimize omega cond of A(gamma)=A+eps*I+U*Diag(gamma)*U'
+%%% Comparing five different choices of gamma
 %%% This file generates the table and performance profile in Section 4.2.
-%%% 
+%%% It uses the following codes:
+%%%     tableomega.m  --- generating the table
+%%%     performanceprofilegen.m  --- performance profile for time
+%%%     performanceprofilegeniter.m  --- performance profile for iteration
+
 clear
 seed = 2;
 rng(seed);
 profile clear
 profile off
 
-options.savetable = true; %true for save table
-options.saveplot = true; %true for sace plot
+options.savetable = false; %true for save table
+options.saveplot = false; %true for sace plot
 
 
-% sizesn = [2000];  %dimensions for tests
+% sizesn = [3000];  %dimensions for tests
 sizesn = [1000,2000,3000,5000];  %dimensions for tests
 resultsn = zeros(length(sizesn),5,6);
 optionsplot.sizesn = sizesn;
@@ -30,7 +37,7 @@ perfprofnametime = 'perfprofomega';  % name used for latex file as of aug15/23
 
 np = 10; %number of problems
 %np = 5; %number of problems
-% np = 2; %number of problems
+% np = 1; %number of problems
 
 setting = zeros(length(sizesn),np,4); %for storing n,r and t
 results = zeros(length(sizesn),np,5,6);  %for storing iterations, cond, residuals and time
@@ -110,7 +117,10 @@ for nn =1:length(sizesn)  %for dimension
 
         Aeps = A + (max(0,-min(eig(A)))+epsilon)*speye(n);
         A0 = Aeps;
+        A0 = full(A0);
         A1 = Aeps + U*U';
+        A1 = (A1+A1)'/2;
+        A1 = full(A1);
 
         %Computing gammastar = 1/u.^2
         startcompn = tic;
@@ -125,6 +135,7 @@ for nn =1:length(sizesn)  %for dimension
         As = (As+As')/2;
         Aa = Aeps + U*diag(gammastarA)*U';
         Aa = (Aa+Aa')/2;
+
         
         % storing the condest condition number
         results(nn,npp,1,1) = condest(A0);
@@ -208,11 +219,13 @@ for nn =1:length(sizesn)  %for dimension
         
         fprintf('\n\n [n,r,t] = [%i %i %i] problem %i out of %i \n',n,r,t,npp,np)
         fprintf('number of iters resp  %i %i %i %i %i\n',iter0,iter1,itern,iters,itera)
+        fprintf('cpu time to solve %i %i %i %i %i\n',stop0,stop1,stopn,stops,stopa)
+        fprintf('time per iter %i %i %i %i %i\n',stop0/iter0,stop1/iter1,stopn/itern,stops/iters,stopa/itera)
         fprintf('condest #s %g %g %g %g %g\n',condest(A0),condest(A1), condest(An),condest(As),condest(Aa))
         fprintf('residuals.  %g %g %g %g %g\n',relres0,relres1,relresn,relress,relresa)
         fprintf('flags.  %i %i %i %i %i\n',flag0,flag1,flagn,flags,flaga)
-        fprintf('ress. norm(Ax-b)  %g %g %g %g\n', ...
-	         norm(A0*x0-B)/norm(B),norm(A1*x1-B)/norm(B),norm(As*xs-B)/norm(B),norm(Aa*xa-B)/norm(B))
+        % fprintf('ress. norm(Ax-b)  %g %g %g %g\n', ...
+	    %      norm(A0*x0-B)/norm(B),norm(A1*x1-B)/norm(B),norm(As*xs-B)/norm(B),norm(Aa*xa-B)/norm(B))
         %storing results
         % for gamma=0
         results(nn,npp,1,2) = iter0;
@@ -308,17 +321,6 @@ end
 
 
 
-% %%%% Create performance profile
-% optionsperf.maxit = maxit;
-% optionsperf.tol = tol;
-% T = performanceprofilegen(results,timegammastar,optionsperf); %data for performance profile
-% perf(T,1,solver)
-% 
-% figname = ...
-%    ['../../../condnumbandQPlatexfiles.d/perfprofomega', solver, '.png'];
-% if options.saveplot == true
-%     exportgraphics(fig1, figname)
-% end
 
 
 %%%% Create performance profile
@@ -330,7 +332,7 @@ fig1 = gca;
 % figname = ...
 %    ['../../../condnumbandQPlatexfiles.d/', perfprofnametime, solver, '.png'];
 figname = ...
-   [perfprofnametime, solver, '.png'];
+   [perfprofnametime, solver, '16Jan.png'];
 if options.saveplot == true
     exportgraphics(fig1, figname)
 end
@@ -344,7 +346,7 @@ fig1 = gca;
 % figname = ...
 %    ['../../../condnumbandQPlatexfiles.d/', perfprofnameiter, solver, '.png'];
 figname = ...
-   [perfprofnameiter, solver, '.png'];
+   [perfprofnameiter, solver, '16Jan.png'];
 if options.saveplot == true
     exportgraphics(fig1, figname)
 end
